@@ -8,6 +8,9 @@ if [ "$1" == "--build" ]
 then
 	podman build --file Containerfile --tag $IMAGE .
 else
+	# If READYMEDIA_IP not set, ask user.
+	[ -z $READYMEDIA_IP ] && read -p "Enter IP address for container: " READYMEDIA_IP
+
 	podman create --name $CONTAINER_NAME\
 		--label io.containers.autoupdate=local\
 		--restart unless-stopped\

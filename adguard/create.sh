@@ -4,6 +4,9 @@ CONTAINER_NAME="adguardhome"
 MOUNTS="/opt/adguard"
 IMAGE="docker.io/adguard/adguardhome:latest"
 
+# If ADGUARD_IP not set, ask user.
+[ -z $ADGUARD_IP ] && read -p "Enter IP address for container: " ADGUARD_IP
+
 podman create --name $CONTAINER_NAME\
 	--label io.containers.autoupdate=registry\
 	--restart unless-stopped\
