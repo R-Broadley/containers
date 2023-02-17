@@ -4,7 +4,8 @@ CONTAINER_NAME="adguardhome"
 MOUNTS="/opt/adguard"
 IMAGE="docker.io/adguard/adguardhome:latest"
 
-# If ADGUARD_IP not set, ask user.
+# If ENV vars not set, ask user.
+[ -z $ADGUARD_MAC ] && read -p "Enter MAC address for container: " ADGUARD_MAC
 [ -z $ADGUARD_IP ] && read -p "Enter IP address for container: " ADGUARD_IP
 
 podman create --name $CONTAINER_NAME\
@@ -13,6 +14,7 @@ podman create --name $CONTAINER_NAME\
 	-v $MOUNTS/work:/opt/adguardhome/work:Z\
 	-v $MOUNTS/conf:/opt/adguardhome/conf:Z\
 	--network home\
+	--mac-address $ADGUARD_MAC\
 	--ip $ADGUARD_IP\
 	--cap-add=NET_RAW\
 	-p 53:53/tcp -p 53:53/udp\

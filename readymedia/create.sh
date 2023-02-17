@@ -8,7 +8,8 @@ if [ "$1" == "--build" ]
 then
 	podman build --file Containerfile --tag $IMAGE .
 else
-	# If READYMEDIA_IP not set, ask user.
+	# If ENV vars not set, ask user.
+	[ -z $READYMEDIA_MAC ] && read -p "Enter MAC address for container: " READYMEDIA_MAC
 	[ -z $READYMEDIA_IP ] && read -p "Enter IP address for container: " READYMEDIA_IP
 
 	podman create --name $CONTAINER_NAME\
@@ -17,6 +18,7 @@ else
 		-v /var/cache/minidlna:/var/cache/minidlna:Z\
 		-v $MOUNTS/music:/var/music\
 		--network home\
+		--mac-address $READYMEDIA_MAC\
 		--ip $READYMEDIA_IP\
 		-p 1900:1900/udp\
 		-p 8200:8200/tcp\
