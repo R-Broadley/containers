@@ -13,7 +13,11 @@ else
 		--restart unless-stopped\
 		-v /var/cache/minidlna:/var/cache/minidlna:Z\
 		-v $MOUNTS/music:/var/music\
-		--network host\
+		--network home\
+		--ip $READYMEDIA_IP\
+		-p 1900:1900/udp\
+		-p 8200:8200/tcp\
+		--hostname $CONTAINER_NAME\
 		$IMAGE
 
 	if [ "$1" == "--service" ]
